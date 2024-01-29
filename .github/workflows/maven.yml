@@ -10,7 +10,7 @@ jobs:
    steps:
    - uses: actions/checkout@v3
    - name: Run maven script
-     uses: guillonapa/action-maven-cli@master
+     uses: guillonapa/action-maven-cli/jdk8@master
      with:
        lifecycle: 'clean package -PbuildKar --file pom.xml'
    - name: Set up JDK 8
