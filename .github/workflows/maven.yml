@@ -9,10 +9,10 @@ jobs:
    runs-on: ubuntu-latest
    steps:
    - uses: actions/checkout@v3
+   - name: clean jdk 11
+     run: sudo apt remove -y openjdk-11-*
    - name: install packages
      run: sudo apt install -y openjdk-8-jdk
-   - name: set java 8 as default
-     run: sudo update-java-alternatives -s $(sudo update-java-alternatives -l | grep '1\.8' | cut -d " " -f1) || echo '.'
    - uses: hb0730/maven-action@v1.0.2
    - name: build and package
      run: mvn clean package -PbuildKar --file pom.xml
