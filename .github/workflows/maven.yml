@@ -9,38 +9,35 @@ jobs:
    runs-on: ubuntu-latest
    steps:
    - uses: actions/checkout@v3
-   - name: clean java 11
-     run: sudo apt remove -y temurin-*
-   - name: version1
-     run: java -version
-   - name: install packages
-     run: sudo apt install -y openjdk-8-jdk
-   - name: version2
-     run: java -version
-   # - uses: hb0730/maven-action@v1.0.2
-   # - name: build and package
-   #   run: mvn clean package -PbuildKar --file pom.xml
-   # - name: version
-   #   run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" | tee -a $GITHUB_OUTPUT
-   #   id: version
-   # - name: release
-   #   if: startsWith(github.ref, 'refs/tags/')
-   #   uses: actions/create-release@v1
-   #   id: create_release
-   #   with:
-   #     draft: false
-   #     prerelease: false
-   #     release_name: ${{ github.ref_name }}
-   #     tag_name: ${{ github.ref }}
-   #   env:
-   #     GITHUB_TOKEN: ${{ github.token }}
-   # - name: upload kar artifact
-   #   if: startsWith(github.ref, 'refs/tags/')
-   #   uses: actions/upload-release-asset@v1
-   #   env:
-   #     GITHUB_TOKEN: ${{ github.token }}
-   #   with:
-   #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-   #     asset_path: ./target/nexus-repository-chef-${{ steps.version.outputs.version }}-bundle.kar
-   #     asset_name: nexus-repository-chef-${{ steps.version.outputs.version }}-bundle.kar
-   #     asset_content_type: application/zip
+   - name: Set up JDK 8 for x64
+     uses: actions/setup-java@v3
+     with:
+       java-version: '8'
+       distribution: 'temurin'
+       architecture: x64
+   - name: build and package
+     run: mvn clean package -PbuildKar --file pom.xml
+   - name: version
+     run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" | tee -a $GITHUB_OUTPUT
+     id: version
+   - name: release
+     if: startsWith(github.ref, 'refs/tags/')
+     uses: actions/create-release@v1
+     id: create_release
+     with:
+       draft: false
+       prerelease: false
+       release_name: ${{ github.ref_name }}
+       tag_name: ${{ github.ref }}
+     env:
+       GITHUB_TOKEN: ${{ github.token }}
+   - name: upload kar artifact
+     if: startsWith(github.ref, 'refs/tags/')
+     uses: actions/upload-release-asset@v1
+     env:
+       GITHUB_TOKEN: ${{ github.token }}
+     with:
+       upload_url: ${{ steps.create_release.outputs.upload_url }}
+       asset_path: ./target/nexus-repository-chef-${{ steps.version.outputs.version }}-bundle.kar
+       asset_name: nexus-repository-chef-${{ steps.version.outputs.version }}-bundle.kar
+       asset_content_type: application/zip
