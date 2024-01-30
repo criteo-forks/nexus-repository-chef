@@ -9,6 +9,8 @@ jobs:
    runs-on: ubuntu-latest
    steps:
    - uses: actions/checkout@v3
+   - name: clean java 11
+     run: sudo apt remove -y temurin-*
    - name: version1
      run: java -version
    - name: install packages
