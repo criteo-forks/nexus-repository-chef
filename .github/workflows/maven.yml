@@ -10,7 +10,7 @@ jobs:
    steps:
    - uses: actions/checkout@v3
    - name: install packages
-     run: apt install -y openjdk-8-jdk
+     run: sudo apt install -y openjdk-8-jdk
    - uses: hb0730/maven-action@v1.0.2
    - name: build and package
      run: mvn clean package -PbuildKar --file pom.xml
