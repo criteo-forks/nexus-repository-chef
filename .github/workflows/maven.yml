@@ -9,16 +9,11 @@ jobs:
    runs-on: ubuntu-latest
    steps:
    - uses: actions/checkout@v3
-   - name: Run maven script
-     uses: guillonapa/action-maven-cli/jdk8@master
-     with:
-       lifecycle: 'clean package -PbuildKar --file pom.xml'
-   - name: Set up JDK 8
-     uses: actions/setup-java@v3
-     with:
-       java-version: '8'
-       distribution: 'temurin'
-       cache: maven
+   - name: install packages
+     run: apt install -y openjdk-8-jdk
+   - uses: hb0730/maven-action@v1.0.2
+   - name: build and package
+     run: mvn clean package -PbuildKar --file pom.xml
    - name: version
      run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" | tee -a $GITHUB_OUTPUT
      id: version
