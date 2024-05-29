@@ -26,7 +26,12 @@
   <version>0.0.13</version>
   <inceptionYear>2018</inceptionYear>
   <packaging>bundle</packaging>
-
+  <repositories>
+    <repository>
+      <id>rso-public-grid</id>
+      <url>https://repository.sonatype.org/content/groups/sonatype-public-grid/</url>
+    </repository>
+  </repositories>
   <dependencies>
 
     <dependency>
